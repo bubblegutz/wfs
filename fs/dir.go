@@ -58,6 +58,15 @@ func (d *Dir) Lookup(ctx context.Context, req *fuse.LookupRequest, resp *fuse.Lo
 		}
 		return ent.(*File), nil
 	}
+	if !d.Loaded {
+		d.List()
+		if ent, ok := d.Entries[req.Name]; ok {
+			if ent.IsDir() {
+				return ent.(*Dir), nil
+			}
+			return ent.(*File), nil
+		}
+	}
 	return nil, fuse.ENOENT
 }
 
