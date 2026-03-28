@@ -158,10 +158,20 @@ func (d *Dir) List() {
 	}
 
 	if export != nil {
-		found := export.([]map[string]interface{})
+		var found []map[string]interface{}
+		switch v := export.(type) {
+		case []map[string]interface{}:
+			found = v
+		case []interface{}:
+			for _, item := range v {
+				if itemMap, ok := item.(map[string]interface{}); ok {
+					found = append(found, itemMap)
+				}
+			}
+		}
 
 		if found != nil {
-			for _, entity := range export.([]map[string]interface{}) {
+			for _, entity := range found {
 				if entity["type"].(string) == "file" {
 					size, _ := strconv.ParseUint(entity["size"].(string), 10, 64)
 					file := NewFile(d, entity["name"].(string), d.WFS, size, time.Now())
