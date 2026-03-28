@@ -8,7 +8,16 @@ import (
 	"path/filepath"
 )
 
+var customPath string = ""
+
+func SetConfigPath(path string) {
+	customPath = path
+}
+
 func GetConfigPath() string {
+	if customPath != "" {
+		return customPath
+	}
 	if xdgConfig := os.Getenv("XDG_CONFIG_HOME"); xdgConfig != "" {
 		return filepath.Join(xdgConfig, "wfs")
 	}

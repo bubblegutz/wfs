@@ -59,7 +59,7 @@ func (wfs *WFS) Statfs(ctx context.Context, req *fuse.StatfsRequest, resp *fuse.
 	return nil
 }
 
-func NewFS(w io.Writer, mountpoint string) {
+func NewFS(w io.Writer, mountpoint string, configDir string) {
 	fmt.Print("Loading the Webfilesystem...")
 	fuse.Unmount(mountpoint)
 	c, err := fuse.Mount(
@@ -75,6 +75,7 @@ func NewFS(w io.Writer, mountpoint string) {
 	rootdir := &Dir{Node: Node{ID: wfs.NextID(), Name: "rootnode", WFS: &wfs}, Entries: make(map[string]Entity)}
 	rootdir.FuseType = fuse.DT_Dir
 	wfs.RootDir = rootdir
+	config.SetConfigPath(configDir)
 	configs, err := config.LoadConfigs()
 	if err != nil {
 		log.Fatal("Can't load configs from HOME/.wfs: %s\n", err)
@@ -93,7 +94,7 @@ func NewFS(w io.Writer, mountpoint string) {
 	}
 	wfs.VM = script.NewVM()
 	fmt.Print("\033[G\033[K")
-	fmt.Println("Webfilesystem is ready...")
+	fmt.Printf("webFS is serving %s at %s\n", config.GetConfigPath(), mountpoint)
 	fmt.Println("\r\r")
 	err = fs.Serve(c, wfs)
 	if err != nil {

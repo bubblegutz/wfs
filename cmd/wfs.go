@@ -7,9 +7,12 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var configDir string
+
 func init() {
 	rootCmd.AddCommand(startCmd)
 	startCmd.Flags().SortFlags = false
+	startCmd.Flags().StringVar(&configDir, "dir", "", "Path to config directory (overrides default)")
 }
 
 var (
@@ -23,5 +26,5 @@ var (
 )
 
 func startWFSCmdRun(cmd *cobra.Command, args []string) {
-	fs.NewFS(os.Stdout, args[0])
+	fs.NewFS(os.Stdout, args[0], configDir)
 }
