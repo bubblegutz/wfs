@@ -5,13 +5,13 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"os"
 	"path/filepath"
 	"strings"
 
 	b64 "encoding/base64"
 
 	xj "github.com/basgys/goxml2json"
+	"github.com/bubblegutz/wfs/config"
 	"github.com/dghubble/oauth1"
 	"github.com/robertkrimen/otto"
 	"golang.org/x/oauth2"
@@ -107,7 +107,7 @@ func NewVM() *otto.Otto {
 
 	require := func(call otto.FunctionCall) otto.Value {
 		file := call.Argument(0).String()
-		var path string = filepath.Join(os.Getenv("HOME"), ".wfs", "lib", file)
+		var path string = filepath.Join(config.GetConfigPath(), "lib", file)
 		data, err := ioutil.ReadFile(path)
 		if err != nil {
 			panic(err)

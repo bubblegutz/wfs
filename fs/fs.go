@@ -7,7 +7,6 @@ import (
 	"log"
 	"os"
 	"os/signal"
-	"path/filepath"
 	"strings"
 	"syscall"
 	"time"
@@ -156,7 +155,7 @@ func watchConfig(wfs *WFS) {
 		}
 	}()
 
-	err = watcher.Add(filepath.Join(os.Getenv("HOME"), ".wfs"))
+	err = watcher.Add(config.GetConfigPath())
 	if err != nil {
 		log.Fatal(err)
 	}

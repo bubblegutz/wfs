@@ -9,10 +9,19 @@ import (
 	"path/filepath"
 )
 
-var path string = filepath.Join(os.Getenv("HOME"), ".wfs")
+func GetConfigPath() string {
+	if xdgConfig := os.Getenv("XDG_CONFIG_HOME"); xdgConfig != "" {
+		return filepath.Join(xdgConfig, "wfs")
+	}
+	home := os.Getenv("HOME")
+	if home == "" {
+		log.Fatal("HOME environment variable not set")
+	}
+	return filepath.Join(home, ".config", "wfs")
+}
 
 func GetConfigFiles() ([]os.FileInfo, error) {
-	files, err := ioutil.ReadDir(path)
+	files, err := ioutil.ReadDir(GetConfigPath())
 	if err != nil {
 		return nil, err
 	}
@@ -20,13 +29,13 @@ func GetConfigFiles() ([]os.FileInfo, error) {
 }
 
 func LoadConfigs() (map[string][]byte, error) {
-	files, err := ioutil.ReadDir(path)
+	files, err := ioutil.ReadDir(GetConfigPath())
 	if err != nil {
 		log.Fatal(err)
 	}
 	configs := make(map[string][]byte)
 	for _, f := range files {
-		file := filepath.Join(path, f.Name())
+		file := filepath.Join(GetConfigPath(), f.Name())
 		if _, err := os.Stat(file); !os.IsNotExist(err) && f.Name() != "lib" {
 			data, err := ioutil.ReadFile(file)
 			if err != nil {
