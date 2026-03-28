@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/autovia/wfs/cmd"
+	"github.com/bubblegutz/wfs/cmd"
 )
 
 func main() {

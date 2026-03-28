@@ -9,7 +9,7 @@ wfs is a virtual file system for parsing and retrieving web APIs. The implementa
 #### On Linux
 
 - Ensure you have the latest version of Go and `fuse3` package installed.
-- Run `go install github.com/autovia/wfs@latest`.
+- Run `go install github.com/bubblegutz/wfs@latest`.
 
 #### Setup
 

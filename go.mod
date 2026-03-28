@@ -1,4 +1,4 @@
-module github.com/autovia/wfs
+module github.com/bubblegutz/wfs
 
 go 1.20
 

@@ -15,8 +15,8 @@ import (
 	"bazil.org/fuse"
 	"bazil.org/fuse/fs"
 
-	"github.com/autovia/wfs/config"
-	script "github.com/autovia/wfs/vm"
+	"github.com/bubblegutz/wfs/config"
+	script "github.com/bubblegutz/wfs/vm"
 	"github.com/fsnotify/fsnotify"
 	"github.com/robertkrimen/otto"
 	flag "github.com/spf13/pflag"

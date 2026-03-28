@@ -3,7 +3,7 @@ package cmd
 import (
 	"os"
 
-	"github.com/autovia/wfs/fs"
+	"github.com/bubblegutz/wfs/fs"
 	"github.com/spf13/cobra"
 )
 
