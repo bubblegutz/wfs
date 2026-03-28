@@ -125,8 +125,8 @@ func NewVM() *otto.Otto {
 
 	require := func(call otto.FunctionCall) otto.Value {
 		file := call.Argument(0).String()
-		var path string = filepath.Join(config.GetConfigPath(), "lib", file)
-		data, err := os.ReadFile(path)
+		libPath := filepath.Join(config.GetConfigPath(), "lib", file)
+		data, err := os.ReadFile(libPath)
 		if err != nil {
 			panic(err)
 		}

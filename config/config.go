@@ -29,7 +29,8 @@ func GetConfigPath() string {
 }
 
 func GetConfigFiles() ([]os.DirEntry, error) {
-	files, err := os.ReadDir(GetConfigPath())
+	rootPath := filepath.Join(GetConfigPath(), "root")
+	files, err := os.ReadDir(rootPath)
 	if err != nil {
 		return nil, err
 	}
@@ -37,13 +38,14 @@ func GetConfigFiles() ([]os.DirEntry, error) {
 }
 
 func LoadConfigs() (map[string][]byte, error) {
-	files, err := os.ReadDir(GetConfigPath())
+	rootPath := filepath.Join(GetConfigPath(), "root")
+	files, err := os.ReadDir(rootPath)
 	if err != nil {
 		log.Fatal(err)
 	}
 	configs := make(map[string][]byte)
 	for _, f := range files {
-		file := filepath.Join(GetConfigPath(), f.Name())
+		file := filepath.Join(rootPath, f.Name())
 		if _, err := os.Stat(file); !os.IsNotExist(err) && f.Name() != "lib" {
 			data, err := os.ReadFile(file)
 			if err != nil {
