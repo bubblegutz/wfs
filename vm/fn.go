@@ -42,6 +42,23 @@ func NewVM() *otto.Otto {
 	}
 	setup(vm.Set("httpGet", httpGet))
 
+	httpPost := func(call otto.FunctionCall) otto.Value {
+		url := call.Argument(0).String()
+		body := call.Argument(1).String()
+		r, err := http.Post(url, "application/json", strings.NewReader(body))
+		if err != nil {
+			panic(err)
+		}
+		defer r.Body.Close()
+		data, err := io.ReadAll(r.Body)
+		if err != nil {
+			panic(err)
+		}
+		v, _ := vm.ToValue(string(data))
+		return v
+	}
+	setup(vm.Set("httpPost", httpPost))
+
 	httpGetOAuth1 := func(call otto.FunctionCall) otto.Value {
 		url := call.Argument(0).String()
 		key := call.Argument(1).String()
