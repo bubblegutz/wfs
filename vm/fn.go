@@ -130,6 +130,9 @@ func NewVM() *otto.Otto {
 		if err != nil {
 			panic(err)
 		}
+		if _, err := vm.Run(string(data)); err != nil {
+			panic(err)
+		}
 		v, _ := vm.ToValue(string(data))
 		return v
 	}
