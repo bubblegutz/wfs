@@ -1,7 +1,6 @@
 package config
 
 import (
-	"io/ioutil"
 	"log"
 	"strings"
 
@@ -20,8 +19,8 @@ func GetConfigPath() string {
 	return filepath.Join(home, ".config", "wfs")
 }
 
-func GetConfigFiles() ([]os.FileInfo, error) {
-	files, err := ioutil.ReadDir(GetConfigPath())
+func GetConfigFiles() ([]os.DirEntry, error) {
+	files, err := os.ReadDir(GetConfigPath())
 	if err != nil {
 		return nil, err
 	}
@@ -29,7 +28,7 @@ func GetConfigFiles() ([]os.FileInfo, error) {
 }
 
 func LoadConfigs() (map[string][]byte, error) {
-	files, err := ioutil.ReadDir(GetConfigPath())
+	files, err := os.ReadDir(GetConfigPath())
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -37,7 +36,7 @@ func LoadConfigs() (map[string][]byte, error) {
 	for _, f := range files {
 		file := filepath.Join(GetConfigPath(), f.Name())
 		if _, err := os.Stat(file); !os.IsNotExist(err) && f.Name() != "lib" {
-			data, err := ioutil.ReadFile(file)
+			data, err := os.ReadFile(file)
 			if err != nil {
 				log.Fatal(err)
 			}

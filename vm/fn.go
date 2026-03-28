@@ -3,8 +3,9 @@ package script
 import (
 	"context"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
+	"os"
 	"path/filepath"
 	"strings"
 
@@ -32,7 +33,7 @@ func NewVM() *otto.Otto {
 		if err != nil {
 			panic(err)
 		}
-		data, err := ioutil.ReadAll(r.Body)
+		data, err := io.ReadAll(r.Body)
 		if err != nil {
 			panic(err)
 		}
@@ -56,7 +57,7 @@ func NewVM() *otto.Otto {
 		if err != nil {
 			panic(err)
 		}
-		data, err := ioutil.ReadAll(r.Body)
+		data, err := io.ReadAll(r.Body)
 		if err != nil {
 			panic(err)
 		}
@@ -79,7 +80,7 @@ func NewVM() *otto.Otto {
 		if err != nil {
 			panic(err)
 		}
-		data, err := ioutil.ReadAll(r.Body)
+		data, err := io.ReadAll(r.Body)
 		if err != nil {
 			panic(err)
 		}
@@ -108,7 +109,7 @@ func NewVM() *otto.Otto {
 	require := func(call otto.FunctionCall) otto.Value {
 		file := call.Argument(0).String()
 		var path string = filepath.Join(config.GetConfigPath(), "lib", file)
-		data, err := ioutil.ReadFile(path)
+		data, err := os.ReadFile(path)
 		if err != nil {
 			panic(err)
 		}
