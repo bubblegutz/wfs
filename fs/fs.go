@@ -61,7 +61,7 @@ func (wfs *WFS) Statfs(ctx context.Context, req *fuse.StatfsRequest, resp *fuse.
 
 func NewFS(w io.Writer, mountpoint string, configDir string) {
 	fmt.Print("Loading the Webfilesystem...")
-	fuse.Unmount(mountpoint)
+	_ = fuse.Unmount(mountpoint)
 	c, err := fuse.Mount(
 		mountpoint,
 		fuse.FSName("Webfilesystem"),
@@ -70,7 +70,7 @@ func NewFS(w io.Writer, mountpoint string, configDir string) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer c.Close()
+	defer func() { _ = c.Close() }()
 	wfs := WFS{MountPoint: mountpoint, NodeID: 0}
 	rootdir := &Dir{Node: Node{ID: wfs.NextID(), Name: "rootnode", WFS: &wfs}, Entries: make(map[string]Entity)}
 	rootdir.FuseType = fuse.DT_Dir
@@ -87,7 +87,7 @@ func NewFS(w io.Writer, mountpoint string, configDir string) {
 		log.Fatal("Can't load configs from HOME/.wfs: %s\n", err)
 	}
 	for _, config := range cfiles {
-		dir := NewDir(rootdir, strings.Replace(config.Name(), ".js", "", -1), "", &wfs, uint64(4096), time.Now())
+		dir := NewDir(rootdir, strings.ReplaceAll(config.Name(), ".js", ""), "", &wfs, uint64(4096), time.Now())
 		if dir == nil {
 			log.Fatal(err)
 		}
@@ -127,7 +127,7 @@ func watchConfig(wfs *WFS) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer watcher.Close()
+	defer func() { _ = watcher.Close() }()
 
 	done := make(chan bool)
 	go func() {
@@ -151,7 +151,7 @@ func watchConfig(wfs *WFS) {
 				if !ok {
 					return
 				}
-				fmt.Printf("error:", err)
+				fmt.Println("error:", err)
 			}
 		}
 	}()

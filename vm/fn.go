@@ -49,7 +49,7 @@ func NewVM() *otto.Otto {
 		if err != nil {
 			panic(err)
 		}
-		defer r.Body.Close()
+		defer func() { _ = r.Body.Close() }()
 		data, err := io.ReadAll(r.Body)
 		if err != nil {
 			panic(err)
@@ -68,7 +68,7 @@ func NewVM() *otto.Otto {
 
 		c := oauth1.NewConfig(key, keysecret)
 		_token := oauth1.NewToken(token, tokensecret)
-		client := c.Client(oauth1.NoContext, _token)
+		client := c.Client(context.Background(), _token)
 
 		r, err := client.Get(url)
 		if err != nil {

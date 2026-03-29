@@ -66,9 +66,9 @@ func (f *File) Download(ctx context.Context) []byte {
 	}
 
 	export, _ := r.ToString()
-	if err != nil {
-		panic(err)
-	}
+	//	if err != nil {
+	//		panic(err)
+	//	}
 
 	f.Size = uint64(len(export))
 	return []byte(export)

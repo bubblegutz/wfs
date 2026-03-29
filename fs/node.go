@@ -6,8 +6,9 @@ import (
 	"path/filepath"
 	"time"
 
+	"context"
+
 	"bazil.org/fuse"
-	"golang.org/x/net/context"
 )
 
 var SourceType string

@@ -51,7 +51,7 @@ func LoadConfigs() (map[string][]byte, error) {
 			if err != nil {
 				log.Fatal(err)
 			}
-			configs[strings.Replace(f.Name(), ".js", "", -1)] = data
+			configs[strings.ReplaceAll(f.Name(), ".js", "")] = data
 		}
 	}
 	return configs, nil
